@@ -32,14 +32,15 @@ const ChatText = ({ username, imageURL, msgID }) => {
 
   return (
     <>
+    <div class="d-flex align-content-start flex-wrap">
       <div className="container " style={{ display: "inline-flex" }}>
         <div
           className="card my-4 flex-grow-1"
-          style={{ borderRadius: "70px", height: "3rem" }}
+          style={{ borderRadius: "70px", height: "3rem", width: '100%' }}
         >
           <div
             className="container"
-            style={{ height: "3rem", paddingTop: "8px" }}
+            style={{ height: "3rem", paddingTop: "8px", width: "90%" }}
           >
             <i className="bi bi-search mg-3"></i>
             <input
@@ -49,8 +50,8 @@ const ChatText = ({ username, imageURL, msgID }) => {
               className="pp1 mx-3"
               onChange={handleChange}
               id="exampleFormControlInput1"
-              placeholder="Search..."
-              style={{ border: "none", outline: "none", width: "300px" }}
+              placeholder="Message"
+              style={{ border: "none", outline: "none", width: "100%" }}
             />
           </div>
         </div>
@@ -59,6 +60,7 @@ const ChatText = ({ username, imageURL, msgID }) => {
             Info
           </button>
         </span>
+      </div>
       </div>
     </>
   );
