@@ -8,6 +8,8 @@ import Test from "./components/Test";
 import Search from "./components/Search";
 import UserProfile from "./components/UserProfile";
 import SearchUser from "./components/SearchUser";
+import AllChats from "./components/AllChats";
+import ChatScreen from "./components/ChatScreen";
 // import UserProfile from "./components/UserProfile";
 
 function App() {
@@ -34,6 +36,12 @@ function App() {
             {" "}
           </Route>
           <Route exact path="/searchuser" element={<SearchUser />}>
+            {" "}
+          </Route>
+          <Route exact path="/allchats" element={<AllChats />}>
+            {" "}
+          </Route>
+          <Route exact path="/chatting" element={<ChatScreen />}>
             {" "}
           </Route>
         </Routes>

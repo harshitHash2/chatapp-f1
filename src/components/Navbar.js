@@ -52,8 +52,13 @@ const Navbar = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/">
+                <Link className="nav-link" to="/allchats">
                   All Chats
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/profile">
+                  Profile
                 </Link>
               </li>
             </ul>
@@ -77,7 +82,7 @@ const Navbar = () => {
             
 
             {localStorage.getItem("uid") !== null && (
-              <button type="button" class="btn btn-danger mx-2" onClick={handleLogOut} >LogOut</button>
+              <button type="button" className="btn btn-danger mx-2" onClick={handleLogOut} >LogOut</button>
             )}
 
             {/* <form className="d-flex" role="search">
