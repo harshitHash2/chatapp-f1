@@ -22,43 +22,45 @@ const Test = () => {
                   Fi~Grad Secure Chat Platform. More to do more.
                 </h1>
 
-                <form
-                  className="form-subscribe"
-                  id="contactForm"
-                  onSubmit={handleSubmit}
-                >
-                  <div className="row">
-                    <div className="col">
-                      <input
-                        className="form-control form-control-lg"
-                        onChange={onChange}
-                        id="emailAddress"
-                        type="email"
-                        name="email"
-                        placeholder="Email Address"
-                      />
+                {localStorage.getItem("uid") === null && (
+                  <form
+                    className="form-subscribe"
+                    id="contactForm"
+                    onSubmit={handleSubmit}
+                  >
+                    <div className="row">
+                      <div className="col">
+                        <input
+                          className="form-control form-control-lg"
+                          onChange={onChange}
+                          id="emailAddress"
+                          type="email"
+                          name="email"
+                          placeholder="Email Address"
+                        />
+                      </div>
+                      <div className="col">
+                        <input
+                          className="form-control form-control-lg"
+                          onChange={onChange}
+                          id="password"
+                          type="password"
+                          placeholder="Password"
+                          name="password"
+                        />
+                      </div>
+                      <div className="col-auto">
+                        <button
+                          className="btn btn-primary btn-lg"
+                          id="submitButton"
+                          type="submit"
+                        >
+                          LogIn
+                        </button>
+                      </div>
                     </div>
-                    <div className="col">
-                      <input
-                        className="form-control form-control-lg"
-                        onChange={onChange}
-                        id="password"
-                        type="password"
-                        placeholder="Password"
-                        name="password"
-                      />
-                    </div>
-                    <div className="col-auto">
-                      <button
-                        className="btn btn-primary btn-lg"
-                        id="submitButton"
-                        type="submit"
-                      >
-                        LogIn
-                      </button>
-                    </div>
-                  </div>
-                </form>
+                  </form>
+                )}
               </div>
             </div>
           </div>

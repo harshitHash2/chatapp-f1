@@ -1,37 +1,34 @@
-import React, {useState} from 'react'
-import { login } from '../firebase/AuthService';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { login } from "../firebase/AuthService";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
+  let history = useNavigate();
 
-    const [credentials, setCredentials] = useState({ email: "", password: "" });
-    let history = useNavigate();
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-      try {
-        const user = await login(credentials.email, credentials.password);
-        console.log(user.user.uid);
-        localStorage.setItem('uid', user.user.uid);
-        history('/')
+    try {
+      const user = await login(credentials.email, credentials.password);
+      console.log(user.user.uid);
+      localStorage.setItem("uid", user.user.uid);
+      history("/");
 
+      // alert('Logged in successfully!');
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
+  };
 
-        // alert('Logged in successfully!');
-      } catch (error) {
-        console.error(error);
-        alert(error.message);
-      }
-    };
-  
-    const onChange = (e) => {
-      setCredentials({ ...credentials, [e.target.name]: e.target.value });
-    };
-  
+  const onChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
 
   return (
     <>
-        <h2 className="polo my-4" style={{ textAlign: "center", color: "white" }}>
+      <h2 className="polo my-4" style={{ textAlign: "center", color: "white" }}>
         {" "}
         Log-In{" "}
       </h2>
@@ -75,7 +72,7 @@ const Login = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Login;

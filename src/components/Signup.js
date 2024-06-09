@@ -31,9 +31,19 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (
+      credentials.name === "" ||
+      credentials.username === "" ||
+      credentials.password === "" ||
+      credentials.email === "" ||
+      image === null
+    ) {
+      alert("Enter valid credentials");
+      return;
+    }
 
     try {
-        //SignUp Process
+      //SignUp Process
       const user = await signUp(credentials.email, credentials.password);
       console.log(user.user.uid);
       localStorage.setItem("uid", user.user.uid);
@@ -46,23 +56,19 @@ const Signup = () => {
 
       await uploadBytes(storageRef, image)
         .then(async (snapshot) => {
-    
           console.log("Uploaded a blob or file!", snapshot);
-          await getDownloadURL(storageRef)
-            .then(async (url) => {
-              setImageUrl(url);
-              
-              // Saving data to fire store 
-              await setDoc(doc(db, "users", user.user.uid), {
-                username: credentials.username,
-                email: credentials.email,
-                imageURL: url,
-                name: credentials.name,
-                uid: user.user.uid,
-              });
+          await getDownloadURL(storageRef).then(async (url) => {
+            setImageUrl(url);
 
+            // Saving data to fire store
+            await setDoc(doc(db, "users", user.user.uid), {
+              username: credentials.username,
+              email: credentials.email,
+              imageURL: url,
+              name: credentials.name,
+              uid: user.user.uid,
             });
-            
+          });
         })
         .catch((error) => {
           console.error("Error uploading file: ", error);

@@ -24,13 +24,11 @@ const Search = () => {
     for (let num of hyp) {
       if (num.toLowerCase().includes(e.target.value.toLowerCase())) {
         // Add the item to the search results list
-      
+
         sresults.add(num);
       }
     }
     setLoad(Array.from(sresults.values()));
-
-    
   };
 
   const fetchData = async () => {
@@ -80,13 +78,18 @@ const Search = () => {
               className="container"
               style={{ height: "3rem", paddingTop: "8px" }}
             >
-              <Link to='/searchuser' state={{value: value}} style={{textDecoration: 'none', color: 'inherit'}}> <h2> {value} </h2> </Link>
-              
+              <Link
+                to="/searchuser"
+                state={{ value: value }}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                {" "}
+                <h2> {value} </h2>{" "}
+              </Link>
             </div>
           </div>
         </div>
       ))}
-      
     </>
   );
 };

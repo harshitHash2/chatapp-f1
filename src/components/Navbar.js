@@ -11,7 +11,7 @@ const Navbar = () => {
 
     try {
       const user = await logout();
-    //   console.log(user.user.uid);
+      //   console.log(user.user.uid);
       localStorage.setItem("uid", null);
       console.log(localStorage.removeItem("uid"));
       history("/");
@@ -26,11 +26,11 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className="navbar navbar-expand-lg bg-body-tertiary"
-        style={{ color: "red" }}
+        className="navbar navbar-expand-lg"
+        style={{ background: "linear-gradient(to right, #ff7e5f, #feb47b)" }}
       >
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/signup">
+          <Link className="navbar-brand" to="/">
             Fi ~ Grad
           </Link>
           <button
@@ -46,21 +46,27 @@ const Navbar = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="/">
-                  Home
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/allchats">
-                  All Chats
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/profile">
-                  Profile
-                </Link>
-              </li>
+              {localStorage.getItem("uid") !== null && (
+                <li className="nav-item">
+                  <Link className="nav-link active" aria-current="page" to="/">
+                    Home
+                  </Link>
+                </li>
+              )}
+              {localStorage.getItem("uid") !== null && (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/allchats">
+                    All Chats
+                  </Link>
+                </li>
+              )}
+              {localStorage.getItem("uid") !== null && (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/profile">
+                    Profile
+                  </Link>
+                </li>
+              )}
             </ul>
 
             {localStorage.getItem("uid") !== null && (
@@ -79,10 +85,15 @@ const Navbar = () => {
                 SignUp
               </Link>
             )}
-            
 
             {localStorage.getItem("uid") !== null && (
-              <button type="button" className="btn btn-danger mx-2" onClick={handleLogOut} >LogOut</button>
+              <button
+                type="button"
+                className="btn btn-danger mx-2"
+                onClick={handleLogOut}
+              >
+                LogOut
+              </button>
             )}
 
             {/* <form className="d-flex" role="search">
