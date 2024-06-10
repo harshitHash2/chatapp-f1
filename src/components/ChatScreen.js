@@ -7,7 +7,7 @@ import {
   orderBy,
   query,
   onSnapshot,
-  where,
+  
 } from "firebase/firestore";
 
 const ChatScreen = () => {
@@ -24,7 +24,7 @@ const ChatScreen = () => {
     const q1 = query(collRef, orderBy("date", "desc"));
 
     const unsubscribe = onSnapshot(q1, (querySnapshot) => {
-      const cities = [];
+      // const cities = [];
       querySnapshot.forEach((doc) => {
         c1.add(doc.id);
 
@@ -34,6 +34,7 @@ const ChatScreen = () => {
 
       // console.log("Current cities in CA: ", cities.join(", "));
     });
+    console.log(unsubscribe);
   };
 
   useEffect(() => {

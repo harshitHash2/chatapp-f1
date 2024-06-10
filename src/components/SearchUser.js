@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import {
   collection,
@@ -17,28 +17,12 @@ const SearchUser = () => {
   const value = location.state?.value;
   const [prof, setProf] = useState({});
   const [friend, setFriend] = useState(false);
-  let tuid = "";
+  const initialRender = useRef(true);
+  // const [tuid, setTuid] = useState("");
+  let tuid = useRef("");
+  // let tuid = "";
 
-  // let prof ={}
-
-  const fetchProfile = async () => {
-    // Fetching user profile
-    const q = query(collection(db, "users"), where("username", "==", value));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      setProf(doc.data());
-      tuid = doc.data()["uid"];
-    });
-
-    // Checking for friendship
-    const docRef = doc(db, "friend", localStorage.getItem("uid"), "with", tuid);
-    const docSnap = await getDoc(docRef);
-    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-    if (docSnap.exists()) {
-      setFriend(true);
-    }
-  };
+  
 
   // Add a friend
   const addFriend = async () => {
@@ -119,9 +103,36 @@ const SearchUser = () => {
     setFriend(true);
   };
 
+  
+
+
   useEffect(() => {
+    
+    if (initialRender.current) {
+      const fetchProfile = async () => {
+        // Fetching user profile
+        const q = query(collection(db, "users"), where("username", "==", value));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          setProf(doc.data());
+          // setTuid(doc.data()["uid"]);
+          tuid.current = doc.data()["uid"];
+          // tuid = doc.data()["uid"];
+        });
+    
+        // Checking for friendship
+        const docRef = doc(db, "friend", localStorage.getItem("uid"), "with", tuid.current);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          setFriend(true);
+        }
+      };
     fetchProfile();
-  }, []);
+    initialRender.current = false;
+    }
+  }, [value]);
 
   return (
     <>
@@ -131,6 +142,7 @@ const SearchUser = () => {
           style={{ borderRadius: "100%", height: "150px", width: "150px" }}
         >
           <img
+            alt="user"
             style={{ borderRadius: "100%", height: "150px", width: "150px" }}
             src={prof["imageURL"]}
           ></img>

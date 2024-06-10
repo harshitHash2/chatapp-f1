@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   collection,
   query,
@@ -17,62 +17,73 @@ const AllChats = () => {
   let myobj = {};
   let temp2 = new Set();
   const [data, setData] = useState({});
+  const initialRender = useRef(true);
 
-  const searching = async () => {
-    // Fetching All friends UID
-    const q = query(
-      collection(db, "friend", localStorage.getItem("uid"), "with"),
-      where("friendship", "==", "true")
-    );
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      temp1.add(doc.id);
-    });
 
-    // For all UID fetching information
-    for (let item of temp1) {
-      const docRef = doc(db, "users", item);
-      const docSnap = await getDoc(docRef);
-      myobj[item] = docSnap.data();
+  
 
-      //Fetching msgID
-      let p1 = "";
-      const q = query(
-        collection(
-          db,
-          "friend",
-          localStorage.getItem("uid"),
-          "with",
-          item,
-          "to"
-        ),
-        where("friendship", "==", "true")
-      );
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        temp2.add(doc.id);
-        p1 = doc.id;
-      });
-
-      // Fetching Latest msg
-      const q2 = query(
-        collection(db, "messaging", p1, "with"),
-        orderBy("date", "desc"),
-        limit(1)
-      );
-      const querySnapshot2 = await getDocs(q2);
-      querySnapshot2.forEach((doc) => {
-        myobj[item].messages = doc.data();
-      });
-      myobj[item].msgId = p1;
-    }
-
-    setData(myobj);
-  };
+  
 
   useEffect(() => {
+
+    if (initialRender.current) {
+      const searching = async () => {
+        // Fetching All friends UID
+        const q = query(
+          collection(db, "friend", localStorage.getItem("uid"), "with"),
+          where("friendship", "==", "true")
+        );
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          temp1.add(doc.id);
+        });
+    
+        // For all UID fetching information
+        for (let item of temp1) {
+          const docRef = doc(db, "users", item);
+          const docSnap = await getDoc(docRef);
+          myobj[item] = docSnap.data();
+    
+          //Fetching msgID
+          let p1 = "";
+          const q = query(
+            collection(
+              db,
+              "friend",
+              localStorage.getItem("uid"),
+              "with",
+              item,
+              "to"
+            ),
+            where("friendship", "==", "true")
+          );
+          const querySnapshot = await getDocs(q);
+          querySnapshot.forEach((doc) => {
+            temp2.add(doc.id);
+            p1 = doc.id;
+          });
+    
+          // Fetching Latest msg
+          const q2 = query(
+            collection(db, "messaging", p1, "with"),
+            orderBy("date", "desc"),
+            limit(1)
+          );
+          const querySnapshot2 = await getDocs(q2);
+          querySnapshot2.forEach((doc) => {
+            myobj[item].messages = doc.data();
+          });
+          myobj[item].msgId = p1;
+        }
+    
+        setData(myobj);
+      };
+    
     searching();
-  }, []);
+    initialRender.current = false;
+
+    }
+  }, [myobj, temp1, temp2]);
 
   return (
     <>

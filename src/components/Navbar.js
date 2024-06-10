@@ -11,9 +11,9 @@ const Navbar = () => {
 
     try {
       const user = await logout();
-      //   console.log(user.user.uid);
+        console.log(user.user.uid);
       localStorage.setItem("uid", null);
-      console.log(localStorage.removeItem("uid"));
+      // console.log(localStorage.removeItem("uid"));
       history("/");
 
       // alert('Logged in successfully!');

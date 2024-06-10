@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { SearchModel, addToSetUnique } from "../models/sp";
+// import { SearchModel, addToSetUnique } from "../models/sp";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/FirebaseSetup";
 import { Link } from "react-router-dom";
@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const hyp = new Set();
 const Search = () => {
   var sresults = new Set();
-  const [hope, setHope] = useState(true);
+  // const [hope, setHope] = useState(true);
   const [load, setLoad] = useState([]);
 
   const handleChange = (e) => {

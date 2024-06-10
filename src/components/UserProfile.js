@@ -25,6 +25,7 @@ const UserProfile = () => {
           style={{ borderRadius: "100%", height: "150px", width: "150px" }}
         >
           <img
+            alt="User"
             style={{ borderRadius: "100%", height: "150px", width: "150px" }}
             src={prof.imageURL}
           ></img>
