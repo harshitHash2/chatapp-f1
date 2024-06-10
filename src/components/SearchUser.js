@@ -22,8 +22,6 @@ const SearchUser = () => {
   let tuid = useRef("");
   // let tuid = "";
 
-  
-
   // Add a friend
   const addFriend = async () => {
     if (friend) {
@@ -103,36 +101,36 @@ const SearchUser = () => {
     setFriend(true);
   };
 
-  
+  const fetchProfile = async () => {
+    // Fetching user profile
+    const q = query(collection(db, "users"), where("username", "==", value));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      setProf(doc.data());
+      // setTuid(doc.data()["uid"]);
+      tuid.current = doc.data()["uid"];
+      // tuid = doc.data()["uid"];
+    });
 
+    // Checking for friendship
+    const docRef = doc(
+      db,
+      "friend",
+      localStorage.getItem("uid"),
+      "with",
+      tuid.current
+    );
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      setFriend(true);
+    }
+  };
 
   useEffect(() => {
-    
-    if (initialRender.current) {
-      const fetchProfile = async () => {
-        // Fetching user profile
-        const q = query(collection(db, "users"), where("username", "==", value));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          setProf(doc.data());
-          // setTuid(doc.data()["uid"]);
-          tuid.current = doc.data()["uid"];
-          // tuid = doc.data()["uid"];
-        });
-    
-        // Checking for friendship
-        const docRef = doc(db, "friend", localStorage.getItem("uid"), "with", tuid.current);
-        const docSnap = await getDoc(docRef);
-        
-        if (docSnap.exists()) {
-          setFriend(true);
-        }
-      };
     fetchProfile();
-    initialRender.current = false;
-    }
-  }, [value]);
+  }, []);
 
   return (
     <>
