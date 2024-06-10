@@ -1,23 +1,30 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../firebase/AuthService";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { db, storage } from "../firebase/FirebaseSetup";
 
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { ref, uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
 
 const Signup = () => {
   const fileInputRef = useRef(null);
   let history = useNavigate();
   const [image, setImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
+  // const [imageUrl, setImageUrl] = useState("");
   const [credentials, setCredentials] = useState({
     name: "",
     username: "",
     email: "",
     password: "",
   });
+
+  // const fetchUser= async ()=> {
+  //   const docRef = doc(db, "search", "username");
+  //   const docSnap = await getDoc(docRef);
+  //   console.log(docSnap.data());
+
+  // }
 
   const handleButtonClick = () => {
     fileInputRef.current.click();
@@ -45,7 +52,7 @@ const Signup = () => {
     try {
       //SignUp Process
       const user = await signUp(credentials.email, credentials.password);
-      console.log(user.user.uid);
+
       localStorage.setItem("uid", user.user.uid);
 
       // Photo processs
@@ -56,9 +63,8 @@ const Signup = () => {
 
       await uploadBytes(storageRef, image)
         .then(async (snapshot) => {
-          console.log("Uploaded a blob or file!", snapshot);
           await getDownloadURL(storageRef).then(async (url) => {
-            setImageUrl(url);
+            // setImageUrl(url);
 
             // Saving data to fire store
             await setDoc(doc(db, "users", user.user.uid), {
@@ -91,29 +97,15 @@ const Signup = () => {
       console.error(error);
       alert(error.message);
     }
-
-    // const response = await fetch("http://localhost:5000/auth/signup", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     name: credentials.name,
-    //     email: credentials.email,
-    //     password: credentials.password,
-    //   }),
-    // });
-    // const json = await response.json();
-    // console.log(json);
-
-    // // Save the auth token and redirect
-    // localStorage.setItem("token", json.authtoken);
-    // history("/about");
   };
 
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
+
+  // useEffect(() => {
+  //   fetchUser();
+  // }, []);
 
   return (
     <>
