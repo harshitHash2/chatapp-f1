@@ -28,7 +28,7 @@ ChatApp is a real-time messaging application built with React.js and integrated 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/harshitHash2/chatapp-f1
+   git clone https://github.com/harshitHash2/chatapp-f1.git
    cd chatapp-f1
 
 2. Create a Firebase project and set up Firebase Authentication and Firestore.
